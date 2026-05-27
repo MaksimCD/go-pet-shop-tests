@@ -45,12 +45,9 @@ func main() {
 	router.Get("/users/{email}", h.GetUserByEmail)
 	router.Get("/users/{email}/orders", h.GetOrdersByUserEmail)
 	router.Get("/users/orders", h.GetOrdersByUserEmail)
-	router.Get("/users/{email}/history", h.GetUserOrderHistory)
-	router.Get("/users/history", h.GetUserOrderHistory)
 
 	router.Post("/products", h.CreateProduct)
 	router.Get("/products", h.GetAllProducts)
-	router.Get("/products/popular", h.GetPopularProducts)
 	router.Get("/products/{id}", h.GetProductByID)
 	router.Put("/products/{id}", h.UpdateProduct)
 	router.Delete("/products/{id}", h.DeleteProduct)

@@ -367,7 +367,6 @@ go-pet-shop/
 - CRUD для пользователей и товаров;
 - создание заказов и позиций заказа;
 - checkout в транзакции;
-- история заказов и аналитика популярных товаров;
 - unit-тесты для [`internal/handlers/shop/handler.go`](/Users/maxim/goOffer/go-pet-shop/internal/handlers/shop/handler.go).
 
 ### Что уже есть в API сейчас
@@ -380,12 +379,9 @@ go-pet-shop/
 - `GET /users/{email}`
 - `GET /users/{email}/orders`
 - `GET /users/orders?email=example@example.com`
-- `GET /users/{email}/history`
-- `GET /users/history?email=example@example.com`
 - `GET /products`
 - `POST /products`
 - `GET /products/{id}`
-- `GET /products/popular`
 - `PUT /products/{id}`
 - `DELETE /products/{id}`
 - `POST /orders`
