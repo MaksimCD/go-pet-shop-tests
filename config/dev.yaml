@@ -1,6 +1,6 @@
 env: "dev" # local, dev, prod
+database_timeout: 10s
 http_server:
   address: "0.0.0.0:8080"
   timeout: 4s
   idle_timeout: 60s
-  database_timeout: 10s

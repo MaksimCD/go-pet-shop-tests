@@ -3,33 +3,34 @@ CREATE TABLE users (
     name TEXT NOT NULL,
     email TEXT UNIQUE NOT NULL
 );
-CREATE INDEX IF NOT EXISTS idx_users_email ON users(email);
+
+CREATE INDEX idx_users_email ON users(email);
 
 CREATE TABLE products (
     id SERIAL PRIMARY KEY,
     name TEXT NOT NULL,
-    price NUMERIC NOT NULL,
-    stock INT NOT NULL
+    price NUMERIC(12,2) NOT NULL CHECK (price >= 0),
+    stock INT NOT NULL CHECK (stock >= 0)
 );
 
 CREATE TABLE orders (
     id SERIAL PRIMARY KEY,
-    user_id INT REFERENCES users(id),
-    total_price NUMERIC NOT NULL,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    user_email TEXT NOT NULL REFERENCES users(email),
+    total_price NUMERIC(12,2) NOT NULL DEFAULT 0 CHECK (total_price >= 0),
+    created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 
 CREATE TABLE order_items (
     id SERIAL PRIMARY KEY,
-    order_id INT REFERENCES orders(id),
-    product_id INT REFERENCES products(id),
-    quantity INT NOT NULL
+    order_id INT NOT NULL REFERENCES orders(id) ON DELETE CASCADE,
+    product_id INT NOT NULL REFERENCES products(id),
+    quantity INT NOT NULL CHECK (quantity > 0)
 );
 
 CREATE TABLE transactions (
     id SERIAL PRIMARY KEY,
-    order_id INT REFERENCES orders(id),
-    amount NUMERIC NOT NULL,
+    order_id INT NOT NULL REFERENCES orders(id) ON DELETE CASCADE,
+    amount NUMERIC(12,2) NOT NULL CHECK (amount >= 0),
     status TEXT NOT NULL,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
 );

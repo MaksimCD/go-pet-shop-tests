@@ -11,46 +11,42 @@ import (
 )
 
 type Config struct {
-	Env         string `yaml:"env" env-default:"local"`
-	DatabaseURL string `yaml:"database_url" env:"DATABASE_URL"`
-	HTTPServer  `yaml:"http_server"`
+	Env             string        `yaml:"env" env-default:"local"`
+	DatabaseURL     string        `env:"DATABASE_URL"`
+	DatabaseTimeout time.Duration `yaml:"database_timeout" env:"DB_TIMEOUT" env-default:"10s"`
+	HTTPServer      HTTPServer    `yaml:"http_server"`
 }
 
 type HTTPServer struct {
-	Address         string        `yaml:"address" env-default:"localhost:8080"`
-	Timeout         time.Duration `yaml:"timeout" env-default:"4s"`
-	IdleTimeout     time.Duration `yaml:"idle_timeout" env-default:"60s"`
-	DatabaseTimeout time.Duration `yaml:"database_timeout" env:"DB_TIMEOUT" env-default:"10s"`
+	Address     string        `yaml:"address" env-default:"localhost:8080"`
+	Timeout     time.Duration `yaml:"timeout" env-default:"4s"`
+	IdleTimeout time.Duration `yaml:"idle_timeout" env-default:"60s"`
 }
 
 func MustLoad() *Config {
-	// Пробуем подгрузить .env, если он есть (в Docker его может не быть)
 	_ = godotenv.Load()
 
-	// Определяем окружение
 	env := os.Getenv("APP_ENV")
 	if env == "" {
 		env = "local"
 	}
 
-	// Путь до yaml
 	configPath := filepath.Join("config", fmt.Sprintf("%s.yaml", env))
-
 	if _, err := os.Stat(configPath); os.IsNotExist(err) {
 		panic(fmt.Sprintf("config file not found: %s", configPath))
 	}
 
-	// Загружаем конфиг
 	var cfg Config
 	if err := cleanenv.ReadConfig(configPath, &cfg); err != nil {
 		panic("cannot read config: " + err.Error())
 	}
 
-	// Проверяем DATABASE_URL (берем из окружения)
-	if cfg.DatabaseURL = os.Getenv("DATABASE_URL"); cfg.DatabaseURL == "" {
+	if err := cleanenv.ReadEnv(&cfg); err != nil {
+		panic("cannot read environment: " + err.Error())
+	}
+	if cfg.DatabaseURL == "" {
 		panic("DATABASE_URL not set in environment")
 	}
 
-	fmt.Printf("✅ Loaded config for environment: %s\n", env)
 	return &cfg
 }
