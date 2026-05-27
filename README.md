@@ -366,7 +366,6 @@ go-pet-shop/
 - миграции базы данных;
 - CRUD для пользователей и товаров;
 - создание заказов и позиций заказа;
-- checkout в транзакции;
 - unit-тесты для [`internal/handlers/shop/handler.go`](/Users/maxim/goOffer/go-pet-shop/internal/handlers/shop/handler.go).
 
 ### Что уже есть в API сейчас
@@ -387,7 +386,6 @@ go-pet-shop/
 - `POST /orders`
 - `POST /orders/{id}/items`
 - `GET /orders/{id}`
-- `POST /checkout`
 
 ### Что еще предполагается по ТЗ
 

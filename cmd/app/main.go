@@ -55,7 +55,6 @@ func main() {
 	router.Post("/orders", h.CreateOrder)
 	router.Post("/orders/{id}/items", h.AddOrderItem)
 	router.Get("/orders/{id}", h.GetOrderByID)
-	router.Post("/checkout", h.Checkout)
 
 	srv := &http.Server{
 		Addr:         cfg.HTTPServer.Address,
