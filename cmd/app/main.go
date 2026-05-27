@@ -43,18 +43,12 @@ func main() {
 	router.Post("/users", h.CreateUser)
 	router.Get("/users", h.GetAllUsers)
 	router.Get("/users/{email}", h.GetUserByEmail)
-	router.Get("/users/{email}/orders", h.GetOrdersByUserEmail)
-	router.Get("/users/orders", h.GetOrdersByUserEmail)
 
 	router.Post("/products", h.CreateProduct)
 	router.Get("/products", h.GetAllProducts)
 	router.Get("/products/{id}", h.GetProductByID)
 	router.Put("/products/{id}", h.UpdateProduct)
 	router.Delete("/products/{id}", h.DeleteProduct)
-
-	router.Post("/orders", h.CreateOrder)
-	router.Post("/orders/{id}/items", h.AddOrderItem)
-	router.Get("/orders/{id}", h.GetOrderByID)
 
 	srv := &http.Server{
 		Addr:         cfg.HTTPServer.Address,
